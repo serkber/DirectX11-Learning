@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Typedefs.h"
+#include "../CommonScripts/Typedefs.h"
 #include <DirectXMath.h>
 #include "Resources.h"
 

@@ -4,7 +4,7 @@
 #include "Dx11Base.h"
 #include "DDSTextureLoader.h"
 #include <DirectXMath.h>
-#include "Typedefs.h"
+#include "../CommonScripts/Typedefs.h"
 #include "Sprite.h"
 #include "Resources.h"
 #include <random>

@@ -10,7 +10,7 @@
 #include <d3dcompiler.h>
 #include <d2d1_3.h>
 #include <dwrite.h>
-#include "Utils.h"
+#include "../CommonScripts//Utils.h"
 
 class CDx11Base
 {

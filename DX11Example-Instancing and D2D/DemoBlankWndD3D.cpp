@@ -39,7 +39,7 @@ bool CDemoBlankWndD3D::LoadVertexShader(ID3DBlob** pVSBuffer)
     HRESULT hr;
 
     //Load vertex Shader
-    if (!CompileShader(L"VertexShader.hlsl", "vsmain", "vs_5_0", pVSBuffer, &shaderError))
+    if (!CompileShader(L"DX11Example-Instancing and D2D/VertexShader.hlsl", "vsmain", "vs_5_0", pVSBuffer, &shaderError))
     {
         ::MessageBox(m_hWnd, shaderError, L"Vertex Shader Compilation Error", MB_OK);
         return false;
@@ -70,7 +70,7 @@ bool CDemoBlankWndD3D::LoadPixelShader()
 
     //Load Pixel Shader
     ID3DBlob* pPSBuffer = NULL;
-    if (!CompileShader(L"PixelShader.hlsl", "psmain", "ps_5_0", &pPSBuffer, &shaderError))
+    if (!CompileShader(L"DX11Example-Instancing and D2D/PixelShader.hlsl", "psmain", "ps_5_0", &pPSBuffer, &shaderError))
     {
         ::MessageBox(m_hWnd, shaderError, L"Pixel Shader Compilation Error", MB_OK);
         return false;
