@@ -1,4 +1,4 @@
-#include "Utils.h"
+﻿#include "Utils.h"
 
 namespace Utils {
     LPCWSTR GetMessageFromHr(HRESULT hr)
@@ -21,7 +21,8 @@ namespace Utils {
     {
         size_t length = strlen(c) + 1;
         wchar_t* wText = new wchar_t[length];
-        mbstowcs(wText, c, length);
+        size_t convertedChars = 0;
+        mbstowcs_s(&convertedChars, wText, length, c, _TRUNCATE);
         return wText;
     }
 
