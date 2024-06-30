@@ -1,4 +1,4 @@
-﻿#include "Utils.h"
+#include "Utils.h"
 
 namespace Utils {
     LPCWSTR GetMessageFromHr(HRESULT hr)

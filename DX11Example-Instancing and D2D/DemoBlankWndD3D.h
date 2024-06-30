@@ -6,7 +6,6 @@
 #include <DirectXMath.h>
 #include "Typedefs.h"
 #include "Sprite.h"
-#include "Resources.h"
 #include <random>
 
 #define PARTICLES_COUNT 100

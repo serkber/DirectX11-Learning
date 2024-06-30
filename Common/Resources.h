@@ -9,7 +9,10 @@ enum TextureName
     Gordo,
     Andres,
     Nick,
-    Bush
+    Bush,
+    Gamepad,
+    Keyboard,
+    Mouse
 };
 
 LPCWSTR Textures[];

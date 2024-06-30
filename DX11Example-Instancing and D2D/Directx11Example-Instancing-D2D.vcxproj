@@ -59,7 +59,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\DirectXTK-main\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Common;$(SolutionDir)..\DirectXTK-main\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -89,19 +89,18 @@
     <ClCompile Include="DemoBlankWndD3D.cpp" />
     <ClCompile Include="Dx11Base.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DemoBlankWndD3D.h" />
     <ClInclude Include="Dx11Base.h" />
-    <ClInclude Include="Resources.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Typedefs.h" />
-    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{ab210446-e93a-4107-8685-b1a15a4f5263}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DirectXTK-main\DirectXTK_Desktop_2022_Win10.vcxproj">
       <Project>{e0b52ae7-e160-4d32-bf3f-910b785e5a8e}</Project>
       <Name>DirectXTK_Desktop_2022_Win10</Name>

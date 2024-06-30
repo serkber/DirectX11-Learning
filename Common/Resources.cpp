@@ -10,4 +10,7 @@ LPCWSTR Textures[]
     L"../Textures/Andres.dds",
     L"../Textures/Nick.dds",
     L"../Textures/Bush.dds",
+    L"../Textures/Gamepad.dds",
+    L"../Textures/Keyboard.dds",
+    L"../Textures/Mouse.dds",
 };
