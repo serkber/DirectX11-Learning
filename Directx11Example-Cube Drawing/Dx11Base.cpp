@@ -131,20 +131,17 @@ void CDx11Base::Terminate()
 {
     // Unload content
     UnloadContent();
+    
+    // for (const auto &res : m_d3dResources)
+    // {
+    //     Utils::UnloadResource(res);
+    // }
 
     // Clean up
-    if (m_pD3DRenderTargetView != nullptr)
-        m_pD3DRenderTargetView->Release();
-    m_pD3DRenderTargetView= nullptr;
-    if (m_pSwapChain != nullptr)
-        m_pSwapChain->Release();
-    m_pSwapChain= nullptr;
-    if (m_pD3DContext != nullptr)
-        m_pD3DContext->Release();
-    m_pD3DContext= nullptr;
-    if (m_pD3DDevice != nullptr)
-        m_pD3DDevice->Release();
-    m_pD3DDevice= nullptr;
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DRenderTargetView));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pSwapChain));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DContext));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DDevice));
 }
 
 bool CDx11Base::CompileShader(const wchar_t* shaderName, const char* shaderEntryPoint, LPCSTR shaderModel, ID3DBlob** buffer, LPCWSTR* errorMessage)

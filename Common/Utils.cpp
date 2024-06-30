@@ -33,4 +33,13 @@ namespace Utils {
         matrix scale = DirectX::XMMatrixScaling(_scale.x, _scale.y, 1.0f);
         return scale * rotationZ * translation;
     }
+
+    void UnloadResource(ID3D11Resource** resource)
+    {
+        if(resource && *resource)
+        {
+            (*resource)->Release();
+        }
+        *resource = nullptr;
+    }
 }

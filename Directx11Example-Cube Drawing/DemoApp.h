@@ -2,7 +2,6 @@
 
 #include "Dx11Base.h"
 #include "Typedefs.h"
-#include "Sprite.h"
 
 class DemoApp : public CDx11Base
 {
@@ -27,7 +26,8 @@ public:
     virtual void Render();
 
 private:
-    bool CreateConstantBuffer();
+    bool CreateConstantBuffers();
+    bool CreateIndexBuffer();
     bool LoadVertexShader(ID3DBlob** pVSBuffer);
     bool SetupInputLayout(ID3DBlob* vertexShaderBlob);
     bool LoadPixelShader();
@@ -41,14 +41,20 @@ private:
     ID3D11PixelShader* m_pPixelShader;
     ID3D11InputLayout* m_pInputLayout;
     ID3D11Buffer* m_pVertexBuffer;
-    ID3D11Buffer* m_pConstantBuffer;
+    ID3D11Buffer* m_pIndexBuffer;
+
+    ID3D11Buffer* m_pViewCB;
+    ID3D11Buffer* m_pProjCB;
+    ID3D11Buffer* m_pModelCB;
+    
     ID3D11ShaderResourceView* m_pColorMap;
     ID3D11SamplerState* m_pColorMapSampler;
     ID3D11Resource* m_pColorMapResource;
     ID3D11BlendState* m_pBlendState;
 
-    Sprite m_crosshair = Sprite(float2(0.5f, 0.5f), 0.0f, float2(0.1f, 0.1f), Crosshair);
-    matrix m_cameraMatrix;
+    matrix m_viewMatrix;
+    matrix m_projMatrix;
+    matrix m_modelMatrix;
 
     POINT* m_mousePos;
     float2 m_mousePosNorm;

@@ -36,7 +36,7 @@ bool CDx11Base::Initialize(HWND hWnd, HINSTANCE hInst)
     swapChainDesc.BufferCount = 1;
     swapChainDesc.BufferDesc.Width = m_windSize.x;
     swapChainDesc.BufferDesc.Height = m_windSize.y;
-    swapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+    swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; //DXGI_FORMAT_B8G8R8A8_UNORM; for use in tandem with D2D
     swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
     swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
     swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -63,8 +63,9 @@ bool CDx11Base::Initialize(HWND hWnd, HINSTANCE hInst)
     };
     UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
-    // Flags
-    UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+    // Flags to use in tandem with D2D
+    //UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+    UINT flags = 0;
 
     // Create the D3D device and the swap chain
     HRESULT hr = ::D3D11CreateDeviceAndSwapChain(
