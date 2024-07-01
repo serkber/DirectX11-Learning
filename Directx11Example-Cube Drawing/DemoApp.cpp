@@ -177,7 +177,7 @@ bool DemoApp::LoadTextures()
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Texture Load Error", MB_OK);
         return false;
     }
-    hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Andres], &m_pColorMapResource, &m_pColorMapTwo);
+    hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Gordo], &m_pColorMapResource, &m_pColorMapTwo);
     if (FAILED(hr))
     {
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Texture Load Error", MB_OK);
@@ -404,7 +404,7 @@ void DemoApp::Render()
     m_pD3DContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
     m_pD3DContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
-    m_modelMatrixCubeOne = DirectX::XMMatrixTranspose(m_modelMatrixCubeOne);
+    m_modelMatrixCubeOne = XMMatrixTranspose(m_modelMatrixCubeOne);
     m_pD3DContext->UpdateSubresource(m_pModelCB, 0, nullptr, &m_modelMatrixCubeOne, 0, 0);
     
     m_pD3DContext->VSSetConstantBuffers(0, 1, &m_pModelCB);
