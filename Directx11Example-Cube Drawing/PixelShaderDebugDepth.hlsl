@@ -7,7 +7,13 @@ struct vsoutput {
     float4 color : COLOR;
 };
 
+float LinearizeDepth(float depth)
+{
+    return (depth * 0.05 * 100) / (100 - depth * (100 - 05));
+}
+
 float4 psmain(vsoutput input) : SV_TARGET
 {
-    return Texture.Sample(TextureSampler, input.uv).r;
+    float linearDepth = LinearizeDepth(Texture.Sample(TextureSampler, input.uv).r);
+    return linearDepth;
 }

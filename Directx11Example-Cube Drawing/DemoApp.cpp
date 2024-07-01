@@ -388,13 +388,15 @@ void DemoApp::Update()
     }
 
     auto rotationMatrix = DirectX::XMMatrixRotationX(m_mousePosNorm.y) * DirectX::XMMatrixRotationY(-m_mousePosNorm.x);
-    auto positionMatrix = DirectX::XMMatrixTranslation(m_mousePosNorm.x * 0.5f, m_mousePosNorm.y * 0.5f, 1.9f);
+    auto positionMatrix = DirectX::XMMatrixTranslation(0, 0, 3);
 
     m_modelMatrixCubeOne = rotationMatrix * positionMatrix;
 
     m_cubeTwoRotation += 0.0001f;
-    m_cubeTwoPosition.z = m_mousePosNorm.y * 2 + 1.0f;
-    m_modelMatrixCubeTwo = DirectX::XMMatrixRotationY(m_cubeTwoRotation) * DirectX::XMMatrixTranslation(m_cubeTwoPosition.x, m_cubeTwoPosition.y, m_cubeTwoPosition.z);
+    m_cubeTwoPosition.z = m_mousePosNorm.x * 2 + 1.0f;
+    m_modelMatrixCubeTwo = DirectX::XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+            DirectX::XMMatrixRotationY(m_cubeTwoRotation) *
+            DirectX::XMMatrixTranslation(m_cubeTwoPosition.x, m_cubeTwoPosition.y, m_cubeTwoPosition.z);
     m_modelMatrixCubeTwo = DirectX::XMMatrixTranspose(m_modelMatrixCubeTwo);
 }
 

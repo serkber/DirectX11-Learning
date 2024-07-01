@@ -11,7 +11,7 @@ CDx11Base::CDx11Base()
     m_pSwapChain = nullptr;
     m_pDepthTexture = nullptr;
     m_pDepthStencilView = nullptr;
-    //m_pDepthStencilState = nullptr;
+    m_pDepthStencilState = nullptr;
 }
 
 CDx11Base::~CDx11Base()
@@ -149,7 +149,7 @@ void CDx11Base::Terminate()
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DContext));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DDevice));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthTexture));
-    //Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthStencilState));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthStencilState));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthStencilView));
 }
 
