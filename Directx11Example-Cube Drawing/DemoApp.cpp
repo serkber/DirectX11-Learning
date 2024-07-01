@@ -24,7 +24,9 @@ DemoApp::DemoApp()
     m_viewMatrix = DirectX::XMMatrixIdentity();
     m_projMatrix = DirectX::XMMatrixIdentity();
     m_modelMatrixCubeOne = DirectX::XMMatrixIdentity();
-    m_modelMatrixCubeTwo = XMMatrixTranspose(DirectX::XMMatrixTranslation(0.0f, 0.0f, 2.0f));
+    m_cubeTwoPosition = float3(0.0f, 0.0f, 2.0f);
+    m_modelMatrixCubeTwo = XMMatrixTranspose(DirectX::XMMatrixTranslation(m_cubeTwoPosition.x, m_cubeTwoPosition.y, m_cubeTwoPosition.z));
+    m_modelMatrixCubeThree =  XMMatrixTranspose(DirectX::XMMatrixScaling(0.2f, 0.2f, 0.2f) * DirectX::XMMatrixTranslation(-0.35f, 0.35f, 1.0f));
     m_pViewCB = nullptr;
     m_pProjCB = nullptr;
     m_pModelCB = nullptr;
@@ -64,7 +66,7 @@ bool DemoApp::LoadVertexShader(ID3DBlob** pVSBuffer)
     return true;
 }
 
-bool DemoApp::LoadPixelShader()
+bool DemoApp::LoadPixelShaders()
 {
     LPCWSTR shaderError = L"";
 
@@ -74,14 +76,28 @@ bool DemoApp::LoadPixelShader()
     {
         ::MessageBox(m_hWnd, shaderError, L"Pixel Shader Compilation Error", MB_OK);
         return false;
-    }
-
+    }    
     // Create pixel shader
     HRESULT hr = m_pD3DDevice->CreatePixelShader(
         pPSBuffer->GetBufferPointer(),
         pPSBuffer->GetBufferSize(),
         nullptr,
         &m_pPixelShader);
+    if (FAILED(hr)) {
+        ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Pixel Shader Creation Error", MB_OK);
+        return false;
+    }
+    
+    if (!CompileShader(L"PixelShaderDebugDepth.hlsl", "psmain", "ps_5_0", &pPSBuffer, &shaderError))
+    {
+        ::MessageBox(m_hWnd, shaderError, L"Pixel Shader Compilation Error", MB_OK);
+        return false;
+    }
+    hr = m_pD3DDevice->CreatePixelShader(
+        pPSBuffer->GetBufferPointer(),
+        pPSBuffer->GetBufferSize(),
+        nullptr,
+        &m_pPixelShaderDepthDebug);
     if (FAILED(hr)) {
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Pixel Shader Creation Error", MB_OK);
         return false;
@@ -304,7 +320,7 @@ bool DemoApp::LoadContent()
     pVSBuffer->Release();
     pVSBuffer = nullptr;
 
-    if (!LoadPixelShader())
+    if (!LoadPixelShaders())
     {
         return false;
     }
@@ -375,6 +391,11 @@ void DemoApp::Update()
     auto positionMatrix = DirectX::XMMatrixTranslation(m_mousePosNorm.x * 0.5f, m_mousePosNorm.y * 0.5f, 1.9f);
 
     m_modelMatrixCubeOne = rotationMatrix * positionMatrix;
+
+    m_cubeTwoRotation += 0.0001f;
+    m_cubeTwoPosition.z = m_mousePosNorm.y * 2 + 1.0f;
+    m_modelMatrixCubeTwo = DirectX::XMMatrixRotationY(m_cubeTwoRotation) * DirectX::XMMatrixTranslation(m_cubeTwoPosition.x, m_cubeTwoPosition.y, m_cubeTwoPosition.z);
+    m_modelMatrixCubeTwo = DirectX::XMMatrixTranspose(m_modelMatrixCubeTwo);
 }
 
 void DemoApp::Render()
@@ -394,11 +415,13 @@ void DemoApp::Render()
     m_pD3DContext->PSSetSamplers(0, 1, &m_pColorMapSampler);
 
     // Set stuff
-    float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-    m_pD3DContext->OMSetBlendState(m_pBlendState, blendFactor, 0xFFFFFFFF);
+    //float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    //m_pD3DContext->OMSetBlendState(m_pBlendState, blendFactor, 0xFFFFFFFF);
     m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    //Draw Moving Cube    
+    //Draw Cube One    
+    // Set the render target
+    m_pD3DContext->OMSetRenderTargets(1, &m_pD3DRenderTargetView, m_pDepthStencilView);
     UINT stride = sizeof(Vertex);
     UINT offset = 0;
     m_pD3DContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
@@ -414,10 +437,18 @@ void DemoApp::Render()
     m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapOne);
     m_pD3DContext->DrawIndexed(36, 0, 0);
 
-    // Draw Static Cube
+    // Draw Cube Three
+    // Set the render target
     m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapTwo);
     m_pD3DContext->UpdateSubresource(m_pModelCB, 0, nullptr, &m_modelMatrixCubeTwo, 0, 0);
     m_pD3DContext->DrawIndexed(36, 0, 0);
+
+    // Draw depth Texture
+    m_pD3DContext->PSSetShader(m_pPixelShaderDepthDebug, nullptr, 0);
+    m_pD3DContext->OMSetRenderTargets(1, &m_pD3DRenderTargetView, nullptr);
+    m_pD3DContext->PSSetShaderResources(0, 1, &m_pDepthShaderResource);
+    m_pD3DContext->UpdateSubresource(m_pModelCB, 0, nullptr, &m_modelMatrixCubeThree, 0, 0);
+    m_pD3DContext->DrawIndexed(6, 0, 0);
 
     // Present back buffer to display
     m_pSwapChain->Present(0, 0);

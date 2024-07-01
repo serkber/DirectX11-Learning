@@ -118,9 +118,6 @@ bool CDx11Base::Initialize(HWND hWnd, HINSTANCE hInst)
     // Bind depth stencil state
     m_pD3DContext->OMSetDepthStencilState(m_pDepthStencilState, 1);
 
-    // Set the render target
-    m_pD3DContext->OMSetRenderTargets(1, &m_pD3DRenderTargetView, m_pDepthStencilView);
-
     // Set the viewport
     D3D11_VIEWPORT viewPort;
     viewPort.Width = (float)m_windSize.x;
@@ -179,11 +176,11 @@ bool CDx11Base::CreateDepthStencilResources()
     depthTextureDesc.Height = m_windSize.y;
     depthTextureDesc.MipLevels = 1;
     depthTextureDesc.ArraySize = 1;
-    depthTextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    depthTextureDesc.Format = DXGI_FORMAT_R32_TYPELESS;
     depthTextureDesc.SampleDesc.Count = 1;
     depthTextureDesc.SampleDesc.Quality = 0;
     depthTextureDesc.Usage = D3D11_USAGE_DEFAULT;
-    depthTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    depthTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
     depthTextureDesc.CPUAccessFlags = 0;
     depthTextureDesc.MiscFlags = 0;
     HRESULT hr = m_pD3DDevice->CreateTexture2D(&depthTextureDesc, nullptr, &m_pDepthTexture);
@@ -223,12 +220,24 @@ bool CDx11Base::CreateDepthStencilResources()
     // Create the depth stencil view
     D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
     ::ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
-    depthStencilViewDesc.Format = depthTextureDesc.Format;
+    depthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT;
     depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     depthStencilViewDesc.Texture2D.MipSlice = 0;
     hr = m_pD3DDevice->CreateDepthStencilView(m_pDepthTexture, &depthStencilViewDesc, &m_pDepthStencilView);
     if (FAILED(hr)) {
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Depth Stencil View Error", MB_OK);
+        return false;
+    }
+    
+    D3D11_SHADER_RESOURCE_VIEW_DESC depthShaderResourceDesc;
+    depthShaderResourceDesc.Format = DXGI_FORMAT_R32_FLOAT;
+    depthShaderResourceDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    depthShaderResourceDesc.Texture2D.MostDetailedMip = 0;
+    depthShaderResourceDesc.Texture2D.MipLevels = 1;
+
+    m_pD3DDevice->CreateShaderResourceView(m_pDepthTexture, &depthShaderResourceDesc, &m_pDepthShaderResource);
+    if (FAILED(hr)) {
+        ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Depth Shader Resource Error", MB_OK);
         return false;
     }
     return true;

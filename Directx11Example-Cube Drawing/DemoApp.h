@@ -29,7 +29,7 @@ private:
     bool CreateIndexBuffer();
     bool LoadVertexShader(ID3DBlob** pVSBuffer);
     bool SetupInputLayout(ID3DBlob* vertexShaderBlob);
-    bool LoadPixelShader();
+    bool LoadPixelShaders();
     bool CreateVertexBuffer();
     void CreateCameraMatrix();
     bool LoadTextures();
@@ -38,6 +38,7 @@ private:
 
     ID3D11VertexShader* m_pVertexShader;
     ID3D11PixelShader* m_pPixelShader;
+    ID3D11PixelShader* m_pPixelShaderDepthDebug;
     ID3D11InputLayout* m_pInputLayout;
     ID3D11Buffer* m_pVertexBuffer;
     ID3D11Buffer* m_pIndexBuffer;
@@ -56,6 +57,9 @@ private:
     matrix m_projMatrix;
     matrix m_modelMatrixCubeOne;
     matrix m_modelMatrixCubeTwo;
+    matrix m_modelMatrixCubeThree;
+    float3 m_cubeTwoPosition;
+    float m_cubeTwoRotation;
 
     POINT* m_mousePos;
     float2 m_mousePosNorm;
