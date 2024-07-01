@@ -4,8 +4,8 @@
 #include <DirectXMath.h>
 #include "Resources.h"
 
-#define VERTEX_COUNT 8;
-#define INDEX_COUNT 36;
+#define VERTEX_COUNT 8
+#define INDEX_COUNT 36
 
 DemoApp::DemoApp()
 {
@@ -160,7 +160,7 @@ bool DemoApp::CreateVertexBuffer()
     vertexDesc.Usage = D3D11_USAGE_DEFAULT;
     vertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vertexDesc.CPUAccessFlags = 0;
-    vertexDesc.ByteWidth = sizeof(Vertex) * 8;
+    vertexDesc.ByteWidth = sizeof(Vertex) * VERTEX_COUNT;
 
     // Resource data
     D3D11_SUBRESOURCE_DATA verticesData;
@@ -290,7 +290,7 @@ bool DemoApp::CreateIndexBuffer()
     ::ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
     indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indexBufferDesc.ByteWidth = sizeof( WORD ) * 36;
+    indexBufferDesc.ByteWidth = sizeof( WORD ) * INDEX_COUNT;
     indexBufferDesc.CPUAccessFlags = 0;
     resourceData.pSysMem = indices;
     HRESULT hr = m_pD3DDevice->CreateBuffer(&indexBufferDesc, &resourceData, &m_pIndexBuffer);
@@ -440,13 +440,13 @@ void DemoApp::Render()
     m_pD3DContext->VSSetConstantBuffers(2, 1, &m_pProjCB);    
     
     m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapOne);
-    m_pD3DContext->DrawIndexed(36, 0, 0);
+    m_pD3DContext->DrawIndexed(INDEX_COUNT, 0, 0);
 
     // Draw Cube Three
     // Set the render target
     m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapTwo);
     m_pD3DContext->UpdateSubresource(m_pModelCB, 0, nullptr, &m_modelMatrixCubeTwo, 0, 0);
-    m_pD3DContext->DrawIndexed(36, 0, 0);
+    m_pD3DContext->DrawIndexed(INDEX_COUNT, 0, 0);
 
     // Draw depth Texture
     m_pD3DContext->PSSetShader(m_pPixelShaderDepthDebug, nullptr, 0);
