@@ -9,6 +9,9 @@ CDx11Base::CDx11Base()
     m_pD3DContext = nullptr;
     m_pD3DRenderTargetView = nullptr;
     m_pSwapChain = nullptr;
+    m_pDepthTexture = nullptr;
+    m_pDepthStencilView = nullptr;
+    //m_pDepthStencilState = nullptr;
 }
 
 CDx11Base::~CDx11Base()
@@ -110,8 +113,13 @@ bool CDx11Base::Initialize(HWND hWnd, HINSTANCE hInst)
     if (pBackBuffer != nullptr)
         pBackBuffer->Release();
 
+    // Depth test stuff
+    CreateDepthStencilResources();
+    // Bind depth stencil state
+    m_pD3DContext->OMSetDepthStencilState(m_pDepthStencilState, 1);
+
     // Set the render target
-    m_pD3DContext->OMSetRenderTargets(1, &m_pD3DRenderTargetView, nullptr);
+    m_pD3DContext->OMSetRenderTargets(1, &m_pD3DRenderTargetView, m_pDepthStencilView);
 
     // Set the viewport
     D3D11_VIEWPORT viewPort;
@@ -127,21 +135,25 @@ bool CDx11Base::Initialize(HWND hWnd, HINSTANCE hInst)
     return LoadContent();
 }
 
+void CDx11Base::ReInitialize(HWND hWnd, HINSTANCE hInst)
+{
+    Terminate();
+    Initialize(hWnd, hInst);
+}
+
 void CDx11Base::Terminate()
 {
     // Unload content
     UnloadContent();
-    
-    // for (const auto &res : m_d3dResources)
-    // {
-    //     Utils::UnloadResource(res);
-    // }
 
     // Clean up
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DRenderTargetView));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pSwapChain));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DContext));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DDevice));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthTexture));
+    //Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthStencilState));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthStencilView));
 }
 
 bool CDx11Base::CompileShader(const wchar_t* shaderName, const char* shaderEntryPoint, LPCSTR shaderModel, ID3DBlob** buffer, LPCWSTR* errorMessage)
@@ -155,5 +167,69 @@ bool CDx11Base::CompileShader(const wchar_t* shaderName, const char* shaderEntry
         return false;
     }
 
+    return true;
+}
+
+bool CDx11Base::CreateDepthStencilResources()
+{
+    // Create depth texture
+    D3D11_TEXTURE2D_DESC depthTextureDesc;
+    ::ZeroMemory( &depthTextureDesc, sizeof(depthTextureDesc));
+    depthTextureDesc.Width = m_windSize.x;
+    depthTextureDesc.Height = m_windSize.y;
+    depthTextureDesc.MipLevels = 1;
+    depthTextureDesc.ArraySize = 1;
+    depthTextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    depthTextureDesc.SampleDesc.Count = 1;
+    depthTextureDesc.SampleDesc.Quality = 0;
+    depthTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+    depthTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    depthTextureDesc.CPUAccessFlags = 0;
+    depthTextureDesc.MiscFlags = 0;
+    HRESULT hr = m_pD3DDevice->CreateTexture2D(&depthTextureDesc, nullptr, &m_pDepthTexture);
+    if (FAILED(hr)) {
+        ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Depth Texture Error", MB_OK);
+        return false;
+    }
+
+    D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+    // Depth test parameters
+    depthStencilDesc.DepthEnable = true;
+    depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+    
+    // Stencil test parameters
+    depthStencilDesc.StencilEnable = false;
+    depthStencilDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+    depthStencilDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+    
+    // Stencil operations if pixel is front-facing
+    depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    
+    // Stencil operations if pixel is back-facing
+    depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    hr = m_pD3DDevice->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState);
+    if (FAILED(hr)) {
+        ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Depth Stencil State Error", MB_OK);
+        return false;
+    }
+    
+    // Create the depth stencil view
+    D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+    ::ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
+    depthStencilViewDesc.Format = depthTextureDesc.Format;
+    depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    depthStencilViewDesc.Texture2D.MipSlice = 0;
+    hr = m_pD3DDevice->CreateDepthStencilView(m_pDepthTexture, &depthStencilViewDesc, &m_pDepthStencilView);
+    if (FAILED(hr)) {
+        ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Depth Stencil View Error", MB_OK);
+        return false;
+    }
     return true;
 }

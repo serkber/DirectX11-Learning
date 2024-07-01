@@ -16,13 +16,15 @@ DemoApp::DemoApp()
     m_pIndexBuffer = nullptr;
     m_pColorMapResource = nullptr;
     m_pColorMapSampler = nullptr;
-    m_pColorMap = nullptr;
+    m_pColorMapOne = nullptr;
+    m_pColorMapTwo = nullptr;
     m_pBlendState = nullptr;
     m_mousePos = new POINT;
     m_mousePosNorm = float2(0.0f, 0.0f);
     m_viewMatrix = DirectX::XMMatrixIdentity();
     m_projMatrix = DirectX::XMMatrixIdentity();
-    m_modelMatrix = DirectX::XMMatrixIdentity();
+    m_modelMatrixCubeOne = DirectX::XMMatrixIdentity();
+    m_modelMatrixCubeTwo = XMMatrixTranspose(DirectX::XMMatrixTranslation(0.0f, 0.0f, 2.0f));
     m_pViewCB = nullptr;
     m_pProjCB = nullptr;
     m_pModelCB = nullptr;
@@ -167,19 +169,21 @@ void DemoApp::CreateCameraMatrix()
     m_projMatrix = DirectX::XMMatrixPerspectiveFovLH(1.0f, m_windSize.x / m_windSize.y, 0.05f, 100.0f);
 }
 
-bool DemoApp::LoadTexture()
+bool DemoApp::LoadTextures()
 {
-    ID3D11ShaderResourceView* colorMap;
-    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Dragon],
-                                                   &m_pColorMapResource, &colorMap);
-
+    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Dragon], &m_pColorMapResource, &m_pColorMapOne);
+    if (FAILED(hr))
+    {
+        ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Texture Load Error", MB_OK);
+        return false;
+    }
+    hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Andres], &m_pColorMapResource, &m_pColorMapTwo);
     if (FAILED(hr))
     {
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Texture Load Error", MB_OK);
         return false;
     }
 
-    m_pColorMap = colorMap;
     return true;
 }
 
@@ -322,7 +326,7 @@ bool DemoApp::LoadContent()
         return false;
     }
 
-    if (!LoadTexture())
+    if (!LoadTextures())
     {
         return false;
     }
@@ -343,7 +347,8 @@ void DemoApp::UnloadContent()
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pIndexBuffer));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pBlendState));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pColorMapSampler));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pColorMap));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pColorMapOne));
+    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pColorMapTwo));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pViewCB));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pProjCB));
     Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pModelCB));
@@ -367,9 +372,9 @@ void DemoApp::Update()
     }
 
     auto rotationMatrix = DirectX::XMMatrixRotationX(m_mousePosNorm.y) * DirectX::XMMatrixRotationY(-m_mousePosNorm.x);
-    auto positionMatrix = DirectX::XMMatrixTranslation(0, 0, 2);
+    auto positionMatrix = DirectX::XMMatrixTranslation(m_mousePosNorm.x * 0.5f, m_mousePosNorm.y * 0.5f, 1.9f);
 
-    m_modelMatrix = rotationMatrix * positionMatrix;
+    m_modelMatrixCubeOne = rotationMatrix * positionMatrix;
 }
 
 void DemoApp::Render()
@@ -381,6 +386,7 @@ void DemoApp::Render()
     // Clear back buffer
     float color[4] = { 0.2f, 0.2f, 0.3f, 1.0f };
     m_pD3DContext->ClearRenderTargetView(m_pD3DRenderTargetView, color);
+    m_pD3DContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     // Set shaders
     m_pD3DContext->VSSetShader(m_pVertexShader, nullptr, 0);
@@ -392,23 +398,25 @@ void DemoApp::Render()
     m_pD3DContext->OMSetBlendState(m_pBlendState, blendFactor, 0xFFFFFFFF);
     m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    //DrawCrosshair
-    matrix mvp = m_modelMatrix * m_viewMatrix;
-    mvp = mvp * m_projMatrix;
-    
+    //Draw Moving Cube    
     UINT stride = sizeof(Vertex);
     UINT offset = 0;
     m_pD3DContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
     m_pD3DContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
-    m_modelMatrix = DirectX::XMMatrixTranspose(m_modelMatrix);
-    m_pD3DContext->UpdateSubresource(m_pModelCB, 0, nullptr, &m_modelMatrix, 0, 0);
+    m_modelMatrixCubeOne = DirectX::XMMatrixTranspose(m_modelMatrixCubeOne);
+    m_pD3DContext->UpdateSubresource(m_pModelCB, 0, nullptr, &m_modelMatrixCubeOne, 0, 0);
     
     m_pD3DContext->VSSetConstantBuffers(0, 1, &m_pModelCB);
     m_pD3DContext->VSSetConstantBuffers(1, 1, &m_pViewCB);
     m_pD3DContext->VSSetConstantBuffers(2, 1, &m_pProjCB);    
     
-    m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMap);
+    m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapOne);
+    m_pD3DContext->DrawIndexed(36, 0, 0);
+
+    // Draw Static Cube
+    m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapTwo);
+    m_pD3DContext->UpdateSubresource(m_pModelCB, 0, nullptr, &m_modelMatrixCubeTwo, 0, 0);
     m_pD3DContext->DrawIndexed(36, 0, 0);
 
     // Present back buffer to display

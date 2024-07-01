@@ -2,7 +2,6 @@
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
-#include <vector>
 
 class CDx11Base
 {
@@ -14,8 +13,10 @@ public:
     // Methods
 public:
     bool Initialize(HWND hWnd, HINSTANCE hInst);
+    void ReInitialize(HWND hWnd, HINSTANCE hInst);
     void Terminate();
     bool CompileShader(const wchar_t* shader_name, const char* shader_entry_point_name, LPCSTR shaderModel, ID3DBlob** buffer, LPCWSTR* errorMessage);
+    bool CreateDepthStencilResources();
 
     // Overrides
 public:
@@ -33,6 +34,10 @@ public:
     ID3D11DeviceContext* m_pD3DContext;
     ID3D11RenderTargetView*	m_pD3DRenderTargetView;
     IDXGISwapChain* m_pSwapChain;
+
+    ID3D11Texture2D* m_pDepthTexture;
+    ID3D11DepthStencilState* m_pDepthStencilState;
+    ID3D11DepthStencilView* m_pDepthStencilView;
 
     POINT m_windSize;
 };

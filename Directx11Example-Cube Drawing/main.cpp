@@ -1,6 +1,4 @@
-
 #include <iostream>
-#include <chrono>
 #include "windows.h"
 #include "DemoApp.h"
 
@@ -47,8 +45,6 @@ HINSTANCE hInstance = GetModuleHandle(NULL);
     MSG msg = { 0 };
     while (msg.message != WM_QUIT)
     {
-        auto time0 = std::chrono::steady_clock::now();
-
         if (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
         {
             ::TranslateMessage(&msg);
@@ -58,12 +54,6 @@ HINSTANCE hInstance = GetModuleHandle(NULL);
         // Update and render
         demo.Update();
         demo.Render();
-
-        auto time1 = std::chrono::steady_clock::now();
-        auto elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(time1 - time0).count();
-        auto elapsedSeconds = (float)elapsedMicroseconds / 1000000.0;
-        auto fps = 1.0 / elapsedSeconds;
-        std::cout << fps << " FPS" << std::endl;
     }
 
     // Terminate demo
@@ -124,13 +114,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
     HDC hdc;
+        RECT rc;
 
     switch (message)
     {
-    case WM_LBUTTONDOWN:
-        return 0;
-    case WM_LBUTTONUP:
-        return 0;
+    case WM_SIZING:
+        demo.ReInitialize(g_hWnd, g_hInst);
+        break;
     case WM_PAINT:
         hdc = ::BeginPaint(hWnd, &ps);
         ::EndPaint(hWnd, &ps);

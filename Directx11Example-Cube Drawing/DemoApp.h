@@ -18,7 +18,6 @@ public:
     virtual ~DemoApp();
 
 // Overrides
-public:
     virtual bool LoadContent();
     virtual void UnloadContent();
 
@@ -33,7 +32,7 @@ private:
     bool LoadPixelShader();
     bool CreateVertexBuffer();
     void CreateCameraMatrix();
-    bool LoadTexture();
+    bool LoadTextures();
     void SetBlendingMode();
     bool CreateTextureSampler();
 
@@ -47,14 +46,16 @@ private:
     ID3D11Buffer* m_pProjCB;
     ID3D11Buffer* m_pModelCB;
     
-    ID3D11ShaderResourceView* m_pColorMap;
+    ID3D11ShaderResourceView* m_pColorMapOne;
+    ID3D11ShaderResourceView* m_pColorMapTwo;
     ID3D11SamplerState* m_pColorMapSampler;
     ID3D11Resource* m_pColorMapResource;
     ID3D11BlendState* m_pBlendState;
 
     matrix m_viewMatrix;
     matrix m_projMatrix;
-    matrix m_modelMatrix;
+    matrix m_modelMatrixCubeOne;
+    matrix m_modelMatrixCubeTwo;
 
     POINT* m_mousePos;
     float2 m_mousePosNorm;
