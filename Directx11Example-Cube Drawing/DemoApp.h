@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <vector>
+
 #include "Dx11Base.h"
 #include "Typedefs.h"
 

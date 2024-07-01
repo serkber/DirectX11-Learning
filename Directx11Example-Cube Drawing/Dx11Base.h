@@ -2,6 +2,7 @@
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
+#include <vector>
 
 class CDx11Base
 {
@@ -39,6 +40,8 @@ public:
     ID3D11DepthStencilState* m_pDepthStencilState;
     ID3D11DepthStencilView* m_pDepthStencilView;
     ID3D11ShaderResourceView* m_pDepthShaderResource;
+    
+    std::vector<ID3D11Resource**> m_resources;
 
     POINT m_windSize;
 };

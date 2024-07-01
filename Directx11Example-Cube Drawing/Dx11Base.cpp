@@ -127,6 +127,15 @@ bool CDx11Base::Initialize(HWND hWnd, HINSTANCE hInst)
     viewPort.TopLeftX = 0;
     viewPort.TopLeftY = 0;
     m_pD3DContext->RSSetViewports(1, &viewPort);
+    
+    m_resources.push_back((ID3D11Resource**)&m_pD3DRenderTargetView);
+    m_resources.push_back((ID3D11Resource**)&m_pSwapChain);
+    m_resources.push_back((ID3D11Resource**)&m_pD3DContext);
+    m_resources.push_back((ID3D11Resource**)&m_pD3DDevice);
+    m_resources.push_back((ID3D11Resource**)&m_pDepthTexture);
+    m_resources.push_back((ID3D11Resource**)&m_pDepthStencilState);
+    m_resources.push_back((ID3D11Resource**)&m_pDepthStencilView);
+    m_resources.push_back((ID3D11Resource**)&m_pDepthShaderResource);
 
     // Load content
     return LoadContent();
@@ -142,15 +151,12 @@ void CDx11Base::Terminate()
 {
     // Unload content
     UnloadContent();
-
-    // Clean up
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DRenderTargetView));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pSwapChain));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DContext));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pD3DDevice));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthTexture));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthStencilState));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pDepthStencilView));
+    
+    for(auto &resource : m_resources)
+    {
+        Utils::UnloadResource(resource);
+        resource = nullptr;
+    }
 }
 
 bool CDx11Base::CompileShader(const wchar_t* shaderName, const char* shaderEntryPoint, LPCSTR shaderModel, ID3DBlob** buffer, LPCWSTR* errorMessage)

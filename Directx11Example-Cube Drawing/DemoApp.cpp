@@ -19,6 +19,9 @@ DemoApp::DemoApp()
     m_pColorMapOne = nullptr;
     m_pColorMapTwo = nullptr;
     m_pBlendState = nullptr;
+    m_pViewCB = nullptr;
+    m_pProjCB = nullptr;
+    m_pModelCB = nullptr;
     m_mousePos = new POINT;
     m_mousePosNorm = float2(0.0f, 0.0f);
     m_viewMatrix = DirectX::XMMatrixIdentity();
@@ -27,9 +30,6 @@ DemoApp::DemoApp()
     m_cubeTwoPosition = float3(0.0f, 0.0f, 2.0f);
     m_modelMatrixCubeTwo = XMMatrixTranspose(DirectX::XMMatrixTranslation(m_cubeTwoPosition.x, m_cubeTwoPosition.y, m_cubeTwoPosition.z));
     m_modelMatrixCubeThree =  XMMatrixTranspose(DirectX::XMMatrixScaling(0.2f, 0.2f, 0.2f) * DirectX::XMMatrixTranslation(-0.35f, 0.35f, 1.0f));
-    m_pViewCB = nullptr;
-    m_pProjCB = nullptr;
-    m_pModelCB = nullptr;
 }
 
 DemoApp::~DemoApp()
@@ -351,23 +351,26 @@ bool DemoApp::LoadContent()
 
     CreateTextureSampler();
 
+    m_resources.push_back((ID3D11Resource**)&m_pVertexShader);
+    m_resources.push_back((ID3D11Resource**)&m_pPixelShader);
+    m_resources.push_back((ID3D11Resource**)&m_pInputLayout);
+    m_resources.push_back((ID3D11Resource**)&m_pVertexBuffer);
+    m_resources.push_back((ID3D11Resource**)&m_pIndexBuffer);
+    m_resources.push_back((ID3D11Resource**)&m_pBlendState);
+    m_resources.push_back((ID3D11Resource**)&m_pColorMapSampler);
+    m_resources.push_back((ID3D11Resource**)&m_pColorMapOne);
+    m_resources.push_back((ID3D11Resource**)&m_pColorMapTwo);
+    m_resources.push_back(&m_pColorMapResource);
+    m_resources.push_back((ID3D11Resource**)&m_pPixelShaderDepthDebug);
+    m_resources.push_back((ID3D11Resource**)&m_pViewCB);
+    m_resources.push_back((ID3D11Resource**)&m_pProjCB);
+    m_resources.push_back((ID3D11Resource**)&m_pModelCB);
+
     return true;
 }
 
 void DemoApp::UnloadContent()
 {
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pVertexShader));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pPixelShader));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pInputLayout));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pVertexBuffer));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pIndexBuffer));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pBlendState));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pColorMapSampler));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pColorMapOne));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pColorMapTwo));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pViewCB));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pProjCB));
-    Utils::UnloadResource(reinterpret_cast<ID3D11Resource**>(&m_pModelCB));
 }
 
 void DemoApp::Update()
