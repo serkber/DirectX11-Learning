@@ -1,5 +1,8 @@
 #include "Utils.h"
 
+#include <string>
+#include <vector>
+
 namespace Utils {
     LPCWSTR GetMessageFromHr(HRESULT hr)
     {
@@ -41,5 +44,25 @@ namespace Utils {
             (*resource)->Release();
         }
         *resource = nullptr;
+    }
+
+    std::vector<std::string> Split(const std::string& str, const char character)
+    {
+        std::vector<std::string> result;
+        int ref = 0;
+        for (int i = 0; i < str.length(); ++i)
+        {
+            if(str[i] == character)
+            {
+                result.push_back(str.substr(ref, i - ref));
+                ref = i + 1;
+            }
+            if(i == str.length() - 1)
+            {
+                result.push_back(str.substr(ref, str.length() - ref));
+            }
+        }
+
+        return result;
     }
 }
