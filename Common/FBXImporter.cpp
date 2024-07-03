@@ -19,7 +19,7 @@ void FBXImporter::EvaluateWord(const std::string& text)
 
         std::string vertsBuffer;
         std::string vertsRaw;
-        while (true)
+        while (!m_file.eof())
         {
             m_file >> vertsBuffer;
 
@@ -63,7 +63,7 @@ void FBXImporter::EvaluateWord(const std::string& text)
         
         std::string indicesBuffer;
         std::string indicesRaw;
-        while (true)
+        while (!m_file.eof())
         {
             m_file >> indicesBuffer;
 
