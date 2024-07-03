@@ -17,21 +17,39 @@ void FBXImporter::EvaluateWord(const std::string& text)
 
         m_vertices = new float3[m_numVertices];
 
+        std::string vertsBuffer;
         std::string vertsRaw;
-        while (!vertsRaw._Equal("a:"))
+        while (true)
         {
-            m_file >> vertsRaw;
+            m_file >> vertsBuffer;
+
+            if(vertsBuffer._Equal("}"))
+            {
+                break;
+            }
+
+            if(vertsBuffer._Equal("a:") || vertsBuffer._Equal("{"))
+            {
+                continue;
+            }
+
+            vertsRaw = vertsRaw + vertsBuffer;
         }
-
-        m_file >> vertsRaw;
+        
         const auto verts = Utils::Split(vertsRaw, ',');
-
+        
         for (int i = 0, j = 0; i < m_numVertices; ++i, j += 3)
         {
             m_vertices[i].x = std::stof(verts[j]);
             m_vertices[i].y = std::stof(verts[j + 1]);
             m_vertices[i].z = std::stof(verts[j + 2]);
         }
+
+        // for (int i = 0; i < m_numVertices; ++i)
+        // {
+        //     std::cout << i << std::endl;
+        //     std::cout << m_vertices[i].x << ' ' << m_vertices[i].y << ' ' << m_vertices[i].z << std::endl;
+        // }
     }
 
     if (text._Equal("PolygonVertexIndex:"))
@@ -40,22 +58,34 @@ void FBXImporter::EvaluateWord(const std::string& text)
         m_file >> numIndices;
         numIndices.erase(0, 1);
         m_numIndices = std::stoi(numIndices);
-
+    
         m_indices = new int[m_numIndices];
         
+        std::string indicesBuffer;
         std::string indicesRaw;
-        while (!indicesRaw._Equal("a:"))
+        while (true)
         {
-            m_file >> indicesRaw;
+            m_file >> indicesBuffer;
+
+            if(indicesBuffer._Equal("}"))
+            {
+                break;
+            }
+
+            if(indicesBuffer._Equal("a:") || indicesBuffer._Equal("{"))
+            {
+                continue;
+            }
+
+            indicesRaw = indicesRaw + indicesBuffer;
         }
-        
-        m_file >> indicesRaw;        
+
         const auto inds = Utils::Split(indicesRaw, ',');
-
-        for (int i = 0; i < inds.size(); ++i)
-        {
+    
+        for (int i = 0; i < m_numIndices; ++i)
+        {                
             auto index = std::stoi(inds[i]);
-
+    
             if(index < 0)
             {
                 index = abs(index) - 1;
@@ -63,7 +93,7 @@ void FBXImporter::EvaluateWord(const std::string& text)
             
             m_indices[i] = index;
         }
-
+    
         for (int i = 0; i < m_numIndices; ++i)
         {
             std::cout << m_indices[i] << std::endl;

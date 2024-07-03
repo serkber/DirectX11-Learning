@@ -7,9 +7,6 @@
 #include "FBXImporter.h"
 #include "Resources.h"
 
-// #define VERTEX_COUNT 4
-// #define INDEX_COUNT 6
-
 DemoApp::DemoApp()
 {
     m_pVertexShader = nullptr;
@@ -300,7 +297,7 @@ bool DemoApp::LoadContent()
 
     FBXImporter modelImporter;
 
-    m_model = modelImporter.GetModel("Cone.fbx");
+    m_model = modelImporter.GetModel("Torus.fbx");
     
     if (!LoadVertexShader(&pVSBuffer))
     {
@@ -411,7 +408,6 @@ void DemoApp::Render()
     //m_pD3DContext->OMSetBlendState(m_pBlendState, blendFactor, 0xFFFFFFFF);
     m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    //Draw Cube One    
     // Set the render target
     m_pD3DContext->OMSetRenderTargets(1, &m_pD3DRenderTargetView, m_pDepthStencilView);
     UINT stride = sizeof(Vertex);
