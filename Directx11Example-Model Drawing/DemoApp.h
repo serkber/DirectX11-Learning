@@ -9,6 +9,8 @@ class DemoApp : public CDx11Base
     struct Vertex
     {
         float3 pos;
+        float3 nor;
+        float2 uv;
     };
 
 // Constructors
@@ -22,6 +24,7 @@ public:
 
     virtual void Update();
     virtual void Render();
+    void ProcessClick();
 
 private:
     bool CreateConstantBuffers();
@@ -59,4 +62,7 @@ private:
     float2 m_mousePosNorm;
 
     FBXImporter::FBXModel m_model;
+
+    std::string m_models[2] {"Suzanne2.fbx", "Cube.fbx"};
+    int m_currentModel = 0;
 };

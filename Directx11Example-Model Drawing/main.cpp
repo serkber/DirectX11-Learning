@@ -118,6 +118,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_LBUTTONDOWN:
+        demo.ProcessClick();
+        return 0;
     case WM_SIZING:
         demo.ReInitialize(g_hWnd, g_hInst);
         break;

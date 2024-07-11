@@ -109,6 +109,8 @@ bool DemoApp::SetupInputLayout(ID3DBlob* vertexShaderBlob)
     {
         // Data from the vertex buffer
         { "POSITION", 0,  DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "NORMAL", 0,  DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
     UINT numLayoutElements = ARRAYSIZE(inputLayout);
@@ -132,34 +134,28 @@ bool DemoApp::SetupInputLayout(ID3DBlob* vertexShaderBlob)
 
 bool DemoApp::CreateVertexBuffer()
 {
-    //Define vertices
-    Vertex vertices[] =
-    {
-        //FACE 1
-        //POS
-        {{-0.5f, -0.5f, -0.0f},},
-        {{-0.5f, 0.5f, -0.0f}, },
-        {{0.5f, 0.5f, -0.0f},  },
-        {{0.5f, -0.5f, -0.0f}, }
-    };
-
     // Vertex buffer description
     D3D11_BUFFER_DESC vertexDesc;
     ::ZeroMemory(&vertexDesc, sizeof(vertexDesc));
     vertexDesc.Usage = D3D11_USAGE_DEFAULT;
     vertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vertexDesc.CPUAccessFlags = 0;
-    vertexDesc.ByteWidth = sizeof(float3) * m_model.vertexCount;
+    vertexDesc.ByteWidth = sizeof(Vertex) * m_model.vertexCount;
+
+    Vertex* vertices = new Vertex[m_model.vertexCount];
+
+    for (int i = 0; i < m_model.vertexCount; ++i)
+    {
+        vertices[i].pos = m_model.vertices[i].position;
+        vertices[i].nor = m_model.vertices[i].normal;
+        vertices[i].uv.x = m_model.vertices[i].uv.x;
+        vertices[i].uv.y = 1 - m_model.vertices[i].uv.y;
+    }
 
     // Resource data
     D3D11_SUBRESOURCE_DATA verticesData;
     ZeroMemory(&verticesData, sizeof(verticesData));
-    verticesData.pSysMem = m_model.vertices;
-
-    for (int i = 0; i < m_model.vertexCount; ++i)
-    {
-        //std::cout << m_model.vertices[i].x << ', ' << m_model.vertices[i].y << ', ' << m_model.vertices[i].z << std::endl;
-    }
+    verticesData.pSysMem = vertices;
 
     // Create vertex buffer
     HRESULT hr = m_pD3DDevice->CreateBuffer(&vertexDesc, &verticesData, &m_pVertexBuffer);
@@ -181,7 +177,7 @@ void DemoApp::CreateCameraMatrix()
 
 bool DemoApp::LoadTexture()
 {
-    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Dragon], &m_pColorMapResource, &m_pColorMapOne);
+    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Fish], &m_pColorMapResource, &m_pColorMapOne);
     if (FAILED(hr))
     {
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Texture Load Error", MB_OK);
@@ -296,8 +292,10 @@ bool DemoApp::LoadContent()
     ID3DBlob* pVSBuffer = nullptr;
 
     FBXImporter modelImporter;
+    //modelImporter.LoadModel(m_models[m_currentModel]);
+    modelImporter.LoadModel("Fish.fbx");
 
-    m_model = modelImporter.GetModel("Torus.fbx");
+    m_model = modelImporter.m_model;
     
     if (!LoadVertexShader(&pVSBuffer))
     {
@@ -404,8 +402,8 @@ void DemoApp::Render()
     m_pD3DContext->PSSetSamplers(0, 1, &m_pColorMapSampler);
 
     // Set stuff
-    //float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-    //m_pD3DContext->OMSetBlendState(m_pBlendState, blendFactor, 0xFFFFFFFF);
+    float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    m_pD3DContext->OMSetBlendState(m_pBlendState, blendFactor, 0xFFFFFFFF);
     m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     // Set the render target
@@ -425,10 +423,22 @@ void DemoApp::Render()
     m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapOne);
     m_pD3DContext->DrawIndexed(m_model.indexCount, 0, 0);
     
-    m_pD3DContext->PSSetShader(m_pPixelShaderWire, nullptr, 0);
-    m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-    m_pD3DContext->DrawIndexed(m_model.indexCount, 0, 0);
+    // m_pD3DContext->PSSetShader(m_pPixelShaderWire, nullptr, 0);
+    // m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+    // m_pD3DContext->DrawIndexed(m_model.indexCount, 0, 0);
 
     // Present back buffer to display
     m_pSwapChain->Present(0, 0);
+}
+
+void DemoApp::ProcessClick()
+{
+    ++m_currentModel;
+
+    if (m_currentModel == 2)
+    {
+        m_currentModel = 0;
+    }
+    
+    LoadContent();    
 }

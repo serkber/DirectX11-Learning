@@ -8,11 +8,11 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2024
 		Month: 7
-		Day: 11
+		Day: 10
 		Hour: 22
-		Minute: 37
-		Second: 26
-		Millisecond: 274
+		Minute: 8
+		Second: 7
+		Millisecond: 380
 	}
 	Creator: "FBX SDK/FBX Plugins version 2020.3.4"
 	OtherFlags:  {
@@ -31,19 +31,19 @@ FBXHeaderExtension:  {
 			Comment: ""
 		}
 		Properties70:  {
-			P: "DocumentUrl", "KString", "Url", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing\Quad.fbx"
-			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing\Quad.fbx"
+			P: "DocumentUrl", "KString", "Url", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing\Test.fbx"
+			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing\Test.fbx"
 			P: "Original", "Compound", "", ""
 			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "Original|ApplicationName", "KString", "", "", "Maya"
 			P: "Original|ApplicationVersion", "KString", "", "", "2024"
-			P: "Original|DateTime_GMT", "DateTime", "", "", "11/07/2024 20:37:26.273"
-			P: "Original|FileName", "KString", "", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing\Quad.fbx"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "10/07/2024 20:08:07.378"
+			P: "Original|FileName", "KString", "", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing\Test.fbx"
 			P: "LastSaved", "Compound", "", ""
 			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "LastSaved|ApplicationName", "KString", "", "", "Maya"
 			P: "LastSaved|ApplicationVersion", "KString", "", "", "2024"
-			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "11/07/2024 20:37:26.273"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "10/07/2024 20:08:07.378"
 			P: "Original|ApplicationActiveProject", "KString", "", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing"
 		}
 	}
@@ -79,7 +79,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 2942666998912, "", "Scene" {
+	Document: 2727886239952, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", "Take 001"
@@ -265,15 +265,20 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 2944730682144, "Geometry::", "Mesh" {
-		Vertices: *12 {
-			a: -0.5,0.5,0,0.5,0.5,0,-0.5,-0.5,0,0.5,-0.5,0
+	Geometry: 2727882613216, "Geometry::", "Mesh" {
+		Vertices: *18 {
+			a: -0.5,0.5,0,
+			0,0.5,0,
+			0.5,0.5,0
+			,-0.5,-0.5,0
+			,0,-0.5,0
+			,0.5,-0.5,0
 		} 
-		PolygonVertexIndex: *6 {
-			a: 0,1,-3,2,1,-4
+		PolygonVertexIndex: *12 {
+			a: 0,1,-4,3,1,-5,1,2,-5,4,2,-6
 		} 
-		Edges: *5 {
-			a: 0,2,4,5,1
+		Edges: *9 {
+			a: 0,2,6,4,10,5,11,1,7
 		} 
 		GeometryVersion: 124
 		LayerElementNormal: 0 {
@@ -281,11 +286,11 @@ Objects:  {
 			Name: ""
 			MappingInformationType: "ByVertice"
 			ReferenceInformationType: "Direct"
-			Normals: *12 {
-				a: 0,0,-1,0,0,-1,0,0,-1,0,0,-1
+			Normals: *18 {
+				a: 0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1
 			} 
-			NormalsW: *4 {
-				a: 1,1,1,1
+			NormalsW: *6 {
+				a: 1,1,1,1,1,1
 			} 
 		}
 		LayerElementUV: 0 {
@@ -293,11 +298,18 @@ Objects:  {
 			Name: "map1"
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
-			UV: *8 {
-				a: 0,0,1,0,0,1,1,1
+			UV: *16 {
+				a: 0.5,0.5,
+				0,0.5,
+				-0.5,0.5,
+				0.5,-0.5,
+				0,-0.5,
+				-0.5,-0.5,
+				0,-0.5,
+				0,0.5
 			} 
-			UVIndex: *6 {
-				a: 0,1,2,2,1,3
+			UVIndex: *12 {
+				a: 0,1,3,3,1,6,7,2,4,4,2,5
 			} 
 		}
 		LayerElementMaterial: 0 {
@@ -325,7 +337,7 @@ Objects:  {
 			}
 		}
 	}
-	Model: 2942109373376, "Model::pPlane1", "Mesh" {
+	Model: 2726793299824, "Model::pPlane1", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
@@ -337,7 +349,7 @@ Objects:  {
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Material: 2944426580624, "Material::standardSurface1", "" {
+	Material: 2727896065280, "Material::standardSurface1", "" {
 		Version: 102
 		ShadingModel: "unknown"
 		MultiLayer: 0
@@ -390,7 +402,7 @@ Objects:  {
 			P: "Maya|normalCameraFactor", "double", "Number", "",0
 		}
 	}
-	Implementation: 2942956424576, "Implementation::standardSurface1_Implementation", "" {
+	Implementation: 2727391391936, "Implementation::standardSurface1_Implementation", "" {
 		Version: 100
 		Properties70:  {
 			P: "ShaderLanguage", "KString", "", "", "StandardSSL"
@@ -399,7 +411,7 @@ Objects:  {
 			P: "RootBindingName", "KString", "", "", "root"
 		}
 	}
-	BindingTable: 2942953980752, "BindingTable::root 1", "" {
+	BindingTable: 2727865467328, "BindingTable::root 2", "" {
 		Version: 100
 		Properties70:  {
 			P: "TargetName", "KString", "", "", "root"
@@ -448,7 +460,7 @@ Objects:  {
 		Entry: "Maya|subsurfaceColor", "FbxPropertyEntry", "subsurface_color", "FbxSemanticEntry"
 		Entry: "Maya|transmissionScatter", "FbxPropertyEntry", "transmission_scatter", "FbxSemanticEntry"
 	}
-	AnimationStack: 2942954627936, "AnimStack::Take 001", "" {
+	AnimationStack: 2727891573712, "AnimStack::Take 001", "" {
 		Properties70:  {
 			P: "LocalStart", "KTime", "Time", "",1924423250
 			P: "LocalStop", "KTime", "Time", "",230930790000
@@ -456,7 +468,7 @@ Objects:  {
 			P: "ReferenceStop", "KTime", "Time", "",230930790000
 		}
 	}
-	AnimationLayer: 2943460648608, "AnimLayer::BaseLayer", "" {
+	AnimationLayer: 2727895740736, "AnimLayer::BaseLayer", "" {
 	}
 }
 
@@ -466,22 +478,22 @@ Objects:  {
 Connections:  {
 	
 	;Model::pPlane1, Model::RootNode
-	C: "OO",2942109373376,0
+	C: "OO",2726793299824,0
 	
 	;AnimLayer::BaseLayer, AnimStack::Take 001
-	C: "OO",2943460648608,2942954627936
+	C: "OO",2727895740736,2727891573712
 	
 	;Material::standardSurface1, Implementation::standardSurface1_Implementation
-	C: "OO",2944426580624,2942956424576
+	C: "OO",2727896065280,2727391391936
 	
-	;BindingTable::root 1, Implementation::standardSurface1_Implementation
-	C: "OO",2942953980752,2942956424576
+	;BindingTable::root 2, Implementation::standardSurface1_Implementation
+	C: "OO",2727865467328,2727391391936
 	
 	;Geometry::, Model::pPlane1
-	C: "OO",2944730682144,2942109373376
+	C: "OO",2727882613216,2726793299824
 	
 	;Material::standardSurface1, Model::pPlane1
-	C: "OO",2944426580624,2942109373376
+	C: "OO",2727896065280,2726793299824
 }
 ;Takes section
 ;----------------------------------------------------

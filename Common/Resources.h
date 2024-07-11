@@ -12,7 +12,9 @@ enum TextureName
     Bush,
     Gamepad,
     Keyboard,
-    Mouse
+    Mouse,
+    CubeUnwrap,
+    Fish
 };
 
 LPCWSTR Textures[];

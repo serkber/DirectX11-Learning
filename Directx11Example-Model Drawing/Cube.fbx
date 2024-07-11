@@ -8,11 +8,11 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2024
 		Month: 7
-		Day: 2
-		Hour: 19
-		Minute: 55
-		Second: 12
-		Millisecond: 363
+		Day: 10
+		Hour: 22
+		Minute: 51
+		Second: 17
+		Millisecond: 486
 	}
 	Creator: "FBX SDK/FBX Plugins version 2020.3.4"
 	OtherFlags:  {
@@ -37,13 +37,13 @@ FBXHeaderExtension:  {
 			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "Original|ApplicationName", "KString", "", "", "Maya"
 			P: "Original|ApplicationVersion", "KString", "", "", "2024"
-			P: "Original|DateTime_GMT", "DateTime", "", "", "02/07/2024 17:55:12.362"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "10/07/2024 20:51:17.485"
 			P: "Original|FileName", "KString", "", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing\Cube.fbx"
 			P: "LastSaved", "Compound", "", ""
 			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "LastSaved|ApplicationName", "KString", "", "", "Maya"
 			P: "LastSaved|ApplicationVersion", "KString", "", "", "2024"
-			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "02/07/2024 17:55:12.362"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "10/07/2024 20:51:17.485"
 			P: "Original|ApplicationActiveProject", "KString", "", "", "C:\Projects\Directx11-Learning\Directx11Example-Model Drawing"
 		}
 	}
@@ -79,7 +79,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 2102908753648, "", "Scene" {
+	Document: 2727886270928, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", "Take 001"
@@ -99,9 +99,37 @@ References:  {
 
 Definitions:  {
 	Version: 100
-	Count: 6
+	Count: 8
 	ObjectType: "GlobalSettings" {
 		Count: 1
+	}
+	ObjectType: "AnimationStack" {
+		Count: 1
+		PropertyTemplate: "FbxAnimStack" {
+			Properties70:  {
+				P: "Description", "KString", "", "", ""
+				P: "LocalStart", "KTime", "Time", "",0
+				P: "LocalStop", "KTime", "Time", "",0
+				P: "ReferenceStart", "KTime", "Time", "",0
+				P: "ReferenceStop", "KTime", "Time", "",0
+			}
+		}
+	}
+	ObjectType: "AnimationLayer" {
+		Count: 1
+		PropertyTemplate: "FbxAnimLayer" {
+			Properties70:  {
+				P: "Weight", "Number", "", "A",100
+				P: "Mute", "bool", "", "",0
+				P: "Solo", "bool", "", "",0
+				P: "Lock", "bool", "", "",0
+				P: "Color", "ColorRGB", "Color", "",0.8,0.8,0.8
+				P: "BlendMode", "enum", "", "",0
+				P: "RotationAccumulationMode", "enum", "", "",0
+				P: "ScaleAccumulationMode", "enum", "", "",0
+				P: "BlendModeBypass", "ULongLong", "", "",0
+			}
+		}
 	}
 	ObjectType: "Geometry" {
 		Count: 1
@@ -237,15 +265,15 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 2101150143024, "Geometry::", "Mesh" {
+	Geometry: 2727882554528, "Geometry::", "Mesh" {
 		Vertices: *24 {
 			a: -0.5,-0.5,0.5,0.5,-0.5,0.5,-0.5,0.5,0.5,0.5,0.5,0.5,-0.5,0.5,-0.5,0.5,0.5,-0.5,-0.5,-0.5,-0.5,0.5,-0.5,-0.5
 		} 
-		PolygonVertexIndex: *24 {
-			a: 0,1,3,-3,2,3,5,-5,4,5,7,-7,6,7,1,-1,1,7,5,-4,6,0,2,-5
+		PolygonVertexIndex: *36 {
+			a: 0,1,-3,2,1,-4,2,3,-5,4,3,-6,4,5,-7,6,5,-8,6,7,-1,0,7,-2,1,7,-4,3,7,-6,6,0,-5,4,0,-3
 		} 
-		Edges: *12 {
-			a: 0,2,6,10,3,1,7,5,11,9,15,13
+		Edges: *18 {
+			a: 0,5,11,17,2,4,8,10,14,16,20,22,1,7,13,19,25,31
 		} 
 		GeometryVersion: 124
 		LayerElementNormal: 0 {
@@ -253,11 +281,11 @@ Objects:  {
 			Name: ""
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "Direct"
-			Normals: *72 {
-				a: 0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,-1,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0
+			Normals: *108 {
+				a: 0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0
 			} 
-			NormalsW: *24 {
-				a: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+			NormalsW: *36 {
+				a: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 			} 
 		}
 		LayerElementUV: 0 {
@@ -268,8 +296,8 @@ Objects:  {
 			UV: *28 {
 				a: 0.375,0,0.625,0,0.375,0.25,0.625,0.25,0.375,0.5,0.625,0.5,0.375,0.75,0.625,0.75,0.375,1,0.625,1,0.875,0,0.875,0.25,0.125,0,0.125,0.25
 			} 
-			UVIndex: *24 {
-				a: 0,1,3,2,2,3,5,4,4,5,7,6,6,7,9,8,1,10,11,3,12,0,2,13
+			UVIndex: *36 {
+				a: 0,1,2,2,1,3,2,3,4,4,3,5,4,5,6,6,5,7,6,7,8,8,7,9,1,10,3,3,10,11,12,0,13,13,0,2
 			} 
 		}
 		LayerElementMaterial: 0 {
@@ -297,22 +325,19 @@ Objects:  {
 			}
 		}
 	}
-	Model: 2100590877152, "Model::pCube1", "Mesh" {
+	Model: 2726793327664, "Model::pCube1", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",6.666,6.666,6.666
-			P: "Lcl Rotation", "Lcl Rotation", "", "A",45,45,45
-			P: "Lcl Scaling", "Lcl Scaling", "", "A",1,2,3
 			P: "currentUVSet", "KString", "", "U", "map1"
 		}
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Material: 2102975207584, "Material::standardSurface1", "" {
+	Material: 2727833791200, "Material::standardSurface1", "" {
 		Version: 102
 		ShadingModel: "unknown"
 		MultiLayer: 0
@@ -365,7 +390,7 @@ Objects:  {
 			P: "Maya|normalCameraFactor", "double", "Number", "",0
 		}
 	}
-	Implementation: 2102920832960, "Implementation::standardSurface1_Implementation", "" {
+	Implementation: 2727391411872, "Implementation::standardSurface1_Implementation", "" {
 		Version: 100
 		Properties70:  {
 			P: "ShaderLanguage", "KString", "", "", "StandardSSL"
@@ -374,7 +399,7 @@ Objects:  {
 			P: "RootBindingName", "KString", "", "", "root"
 		}
 	}
-	BindingTable: 2100622006112, "BindingTable::root 4", "" {
+	BindingTable: 2725577485984, "BindingTable::root 3", "" {
 		Version: 100
 		Properties70:  {
 			P: "TargetName", "KString", "", "", "root"
@@ -423,6 +448,16 @@ Objects:  {
 		Entry: "Maya|subsurfaceColor", "FbxPropertyEntry", "subsurface_color", "FbxSemanticEntry"
 		Entry: "Maya|transmissionScatter", "FbxPropertyEntry", "transmission_scatter", "FbxSemanticEntry"
 	}
+	AnimationStack: 2727879857328, "AnimStack::Take 001", "" {
+		Properties70:  {
+			P: "LocalStart", "KTime", "Time", "",1924423250
+			P: "LocalStop", "KTime", "Time", "",230930790000
+			P: "ReferenceStart", "KTime", "Time", "",1924423250
+			P: "ReferenceStop", "KTime", "Time", "",230930790000
+		}
+	}
+	AnimationLayer: 2725582457520, "AnimLayer::BaseLayer", "" {
+	}
 }
 
 ; Object connections
@@ -431,17 +466,31 @@ Objects:  {
 Connections:  {
 	
 	;Model::pCube1, Model::RootNode
-	C: "OO",2100590877152,0
+	C: "OO",2726793327664,0
+	
+	;AnimLayer::BaseLayer, AnimStack::Take 001
+	C: "OO",2725582457520,2727879857328
 	
 	;Material::standardSurface1, Implementation::standardSurface1_Implementation
-	C: "OO",2102975207584,2102920832960
+	C: "OO",2727833791200,2727391411872
 	
-	;BindingTable::root 4, Implementation::standardSurface1_Implementation
-	C: "OO",2100622006112,2102920832960
+	;BindingTable::root 3, Implementation::standardSurface1_Implementation
+	C: "OO",2725577485984,2727391411872
 	
 	;Geometry::, Model::pCube1
-	C: "OO",2101150143024,2100590877152
+	C: "OO",2727882554528,2726793327664
 	
 	;Material::standardSurface1, Model::pCube1
-	C: "OO",2102975207584,2100590877152
+	C: "OO",2727833791200,2726793327664
+}
+;Takes section
+;----------------------------------------------------
+
+Takes:  {
+	Current: "Take 001"
+	Take: "Take 001" {
+		FileName: "Take_001.tak"
+		LocalTime: 1924423250,230930790000
+		ReferenceTime: 1924423250,230930790000
+	}
 }
