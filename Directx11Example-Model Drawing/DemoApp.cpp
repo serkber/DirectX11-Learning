@@ -292,8 +292,8 @@ bool DemoApp::LoadContent()
     ID3DBlob* pVSBuffer = nullptr;
 
     FBXImporter modelImporter;
-    //modelImporter.LoadModel(m_models[m_currentModel]);
-    modelImporter.LoadModel("Fish.fbx");
+    modelImporter.LoadModel(m_models[m_currentModel]);
+    //modelImporter.LoadModel("Fish.fbx");
 
     m_model = modelImporter.m_model;
     
@@ -435,7 +435,7 @@ void DemoApp::ProcessClick()
 {
     ++m_currentModel;
 
-    if (m_currentModel == 2)
+    if (m_currentModel == 4)
     {
         m_currentModel = 0;
     }

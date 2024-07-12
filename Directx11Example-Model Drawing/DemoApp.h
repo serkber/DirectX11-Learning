@@ -63,6 +63,6 @@ private:
 
     FBXImporter::FBXModel m_model;
 
-    std::string m_models[2] {"Suzanne2.fbx", "Cube.fbx"};
+    std::string m_models[4] {"Suzanne2.fbx", "Cube.fbx", "Torus.fbx", "Fish.fbx"};
     int m_currentModel = 0;
 };

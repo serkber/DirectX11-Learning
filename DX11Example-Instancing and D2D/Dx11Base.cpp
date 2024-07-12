@@ -4,6 +4,7 @@
 //
 
 #include "Dx11Base.h"
+#include "Utils.h"
 
 CDx11Base::CDx11Base()
 {

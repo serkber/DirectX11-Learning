@@ -134,6 +134,7 @@ void FBXImporter::DecodeMesh()
     std::vector<float3> allNormals(m_indicesCount);
     std::vector<float2> allUvs(m_indicesCount);
 
+    Utils::StartTimeMeasure();
     for (int i = 0; i < m_indicesCount; ++i)
     {
         // std::cout << m_positions[m_posIndices[i]].x << ' ' << m_positions[m_posIndices[i]].y << "      " << m_uvs[m_uvIndices[i]].x << ' ' << m_uvs[m_uvIndices[i]].y << std::endl;
@@ -150,6 +151,7 @@ void FBXImporter::DecodeMesh()
             allNormals[i] = m_normals[m_posIndices[i]];
         }
     }
+    Utils::StopTimeMeasure("Get All Data");
 
     std::vector<int> allIndices(m_indicesCount);
     std::iota (std::begin(allIndices), std::end(allIndices), 0);
@@ -158,6 +160,7 @@ void FBXImporter::DecodeMesh()
     std::vector<int> replacedRaw;
     int replacementsCount = 0;
 
+    Utils::StartTimeMeasure();
     for (int i1 = 0; i1 < m_indicesCount; ++i1)
     {
         auto indexOne = allIndices[i1];
@@ -185,19 +188,23 @@ void FBXImporter::DecodeMesh()
             }
         }
     }
+    Utils::StopTimeMeasure("Find repeated vertices");
 
     //std::sort(replacements.begin(), replacements.end(), [] (std::pair<int, int> one, std::pair<int, int> two) {return one.second < two.second;});
 
+    Utils::StartTimeMeasure();
     for (int i = 0; i < replacements.size(); ++i)
     {
         ReplaceInIndices(&allIndices, replacements[i].second, replacements[i].first);
         UpdateReplacements(&replacements, replacements[i].second, replacements[i].first);
     }
+    Utils::StopTimeMeasure("Reorder triangles");
     
     m_model.indexCount = allIndices.size();
     m_model.vertexCount = allPositions.size() - replacementsCount;
     m_model.vertices = new Vertex[m_model.vertexCount];
-    
+
+    Utils::StartTimeMeasure();
     int vertexIndex = 0;
     for (int i = 0; i < allPositions.size(); ++i)
     {
@@ -216,12 +223,15 @@ void FBXImporter::DecodeMesh()
 
         ++vertexIndex;
     }
-    
+    Utils::StopTimeMeasure("Save final data");
+
+    Utils::StartTimeMeasure();
     m_model.indices = new int[m_model.indexCount];
     for (int i = 0; i < m_model.indexCount; ++i)
     {
         m_model.indices[i] = allIndices[i];
     }
+    Utils::StopTimeMeasure("Save indices");
 }
 
 void FBXImporter::UpdateReplacements(std::vector<std::pair<int, int>> *replacements, int oldIndex, int newIndex)
@@ -272,12 +282,14 @@ FBXImporter::FBXModel* FBXImporter::LoadModel(std::string file)
 
     if(m_file)
     {
-        
+
+        Utils::StartTimeMeasure();
         std::string text;
         while (m_file >> text)
         {
             EvaluateWord(text);
         }
+        Utils::StopTimeMeasure("Parse file ");
 
         DecodeMesh();
         

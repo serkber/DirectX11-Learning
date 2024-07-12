@@ -1,4 +1,5 @@
 #include "DemoBlankWndD3D.h"
+#include "Utils.h"
 
 CDemoBlankWndD3D::CDemoBlankWndD3D()
 {

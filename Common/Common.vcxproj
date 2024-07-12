@@ -156,7 +156,6 @@
   <ItemGroup>
     <ClCompile Include="FBXImporter.cpp" />
     <ClCompile Include="Resources.cpp" />
-    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FBXImporter.h" />
