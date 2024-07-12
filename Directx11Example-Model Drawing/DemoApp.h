@@ -26,6 +26,7 @@ public:
     virtual void Update();
     virtual void Render();
     void ProcessClick();
+    void ProcessRightClick();
 
 private:
     bool CreateConstantBuffers();
@@ -68,4 +69,5 @@ private:
     TextureName m_textures[4] {Suzanne, CubeUnwrap, Marble, Fish};
     
     int m_currentModel = 0;
+    bool m_drawWire = false;
 };

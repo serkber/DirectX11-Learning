@@ -422,10 +422,13 @@ void DemoApp::Render()
     
     m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMapOne);
     m_pD3DContext->DrawIndexed(m_model.indexCount, 0, 0);
-    
-    // m_pD3DContext->PSSetShader(m_pPixelShaderWire, nullptr, 0);
-    // m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-    // m_pD3DContext->DrawIndexed(m_model.indexCount, 0, 0);
+
+    if(m_drawWire)
+    {
+        m_pD3DContext->PSSetShader(m_pPixelShaderWire, nullptr, 0);
+        m_pD3DContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+        m_pD3DContext->DrawIndexed(m_model.indexCount, 0, 0);
+    }
 
     // Present back buffer to display
     m_pSwapChain->Present(0, 0);
@@ -441,4 +444,9 @@ void DemoApp::ProcessClick()
     }
     
     LoadContent();    
+}
+
+void DemoApp::ProcessRightClick()
+{
+    m_drawWire = !m_drawWire;
 }

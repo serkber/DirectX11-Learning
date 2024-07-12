@@ -118,6 +118,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_RBUTTONDOWN:
+        demo.ProcessRightClick();
+        return 0;
     case WM_LBUTTONDOWN:
         demo.ProcessClick();
         return 0;
