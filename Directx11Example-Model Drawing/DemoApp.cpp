@@ -177,7 +177,7 @@ void DemoApp::CreateCameraMatrix()
 
 bool DemoApp::LoadTexture()
 {
-    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Fish], &m_pColorMapResource, &m_pColorMapOne);
+    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[m_textures[m_currentModel]], &m_pColorMapResource, &m_pColorMapOne);
     if (FAILED(hr))
     {
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Texture Load Error", MB_OK);
@@ -379,7 +379,7 @@ void DemoApp::Update()
         //ShowCursor(false);
     }
 
-    auto rotationMatrix = DirectX::XMMatrixRotationX(m_mousePosNorm.y) * DirectX::XMMatrixRotationY(-m_mousePosNorm.x);
+    auto rotationMatrix = DirectX::XMMatrixRotationX(m_mousePosNorm.y * 6) * DirectX::XMMatrixRotationY(-m_mousePosNorm.x * 6);
     auto positionMatrix = DirectX::XMMatrixTranslation(0, 0, 3);
 
     m_modelMatrix = rotationMatrix * positionMatrix;

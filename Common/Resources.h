@@ -14,7 +14,9 @@ enum TextureName
     Keyboard,
     Mouse,
     CubeUnwrap,
-    Fish
+    Fish,
+    Suzanne,
+    Marble
 };
 
 LPCWSTR Textures[];
