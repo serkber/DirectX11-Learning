@@ -2,7 +2,7 @@
 
 #include <wtypes.h>
 
-enum TextureName
+typedef enum Tex
 {
     Crosshair,
     Dragon,

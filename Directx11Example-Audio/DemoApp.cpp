@@ -174,7 +174,7 @@ void DemoApp::CreateCameraMatrix()
 
 bool DemoApp::LoadTexture()
 {
-    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[m_textures[m_currentModel]], &m_pColorMapResource, &m_pColorMapOne);
+    HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pD3DDevice, m_pD3DContext, Textures[Tex::], &m_pColorMapResource, &m_pColorMapOne);
     if (FAILED(hr))
     {
         ::MessageBox(m_hWnd, Utils::GetMessageFromHr(hr), L"Texture Load Error", MB_OK);
