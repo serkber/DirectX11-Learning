@@ -22,7 +22,7 @@ float4 psmain(vsoutput input) : SV_TARGET
     mouse += 0.5;
 
     float2 magnifiedUvs = ((input.uv - 0.5) / 2) + 0.5;
-    float mask = smoothstep(sin(time * 1.5) * 0.2 + 0.3, 1, saturate(1 - length(input.uv - mouse)));
+    float mask = smoothstep(sin(time * 1.5) * 0.2 + 0.5, 1, saturate(1 - length(input.uv - mouse)));
     float2 finalUvs = lerp(input.uv, magnifiedUvs, mask);
 
     return float4(Texture.Sample(TextureSampler, finalUvs).rgb, 1) + float4(mouse.x, mouse.y, sin(time), 1) * mask;;

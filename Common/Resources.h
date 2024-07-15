@@ -16,7 +16,8 @@ enum TextureName
     CubeUnwrap,
     Fish,
     Suzanne,
-    Marble
+    Marble,
+    Tank
 };
 
 LPCWSTR Textures[];

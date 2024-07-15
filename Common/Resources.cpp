@@ -16,5 +16,6 @@ LPCWSTR Textures[]
     L"../Textures/CubeUnwrap.dds",
     L"../Textures/Fish.dds",
     L"../Textures/Suzanne.dds",
-    L"../Textures/Marble.dds"
+    L"../Textures/Marble.dds",
+    L"../Textures/Tank.dds",
 };
