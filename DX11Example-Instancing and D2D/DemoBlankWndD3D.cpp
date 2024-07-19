@@ -313,7 +313,7 @@ void CDemoBlankWndD3D::DrawBackground() const
     }
 }
 
-void CDemoBlankWndD3D::DrawSpriteInstanced(TextureName texture, int spritesCount) const
+void CDemoBlankWndD3D::DrawSpriteInstanced(Tex texture, int spritesCount) const
 {
     m_pD3DContext->PSSetShaderResources(0, 1, &m_pColorMaps[texture]);
     m_pD3DContext->DrawInstanced(6, spritesCount, 0, 0);
@@ -360,7 +360,7 @@ void CDemoBlankWndD3D::ProcessClick()
 
 void CDemoBlankWndD3D::SetParticlesData()
 {
-    m_particleTexture = (TextureName)rndTexture(mt);
+    m_particleTexture = (Tex)rndTexture(mt);
     for (int i = 0; i < PARTICLES_COUNT; i++) {
         float scale = rndScale(mt);
 

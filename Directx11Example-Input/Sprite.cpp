@@ -5,10 +5,10 @@ Sprite::Sprite()
     m_position = float2(0.0f, 0.0f);
     m_rotation = 0;
     m_scale = float2(1.0f, 1.0f);
-    m_texture = (TextureName)0;
+    m_texture = (Tex)0;
 };
 
-Sprite::Sprite(float2 position, float rotation, float2 scale, TextureName texture)
+Sprite::Sprite(float2 position, float rotation, float2 scale, Tex texture)
 {
     m_position = position;
     m_rotation = rotation;

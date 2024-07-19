@@ -41,7 +41,7 @@ public:
     virtual void ProcessClick();
 
 private:
-    void DrawSpriteInstanced(TextureName texture, int spritesCount = 1) const;
+    void DrawSpriteInstanced(Tex texture, int spritesCount = 1) const;
     void DrawHUD() const;
     void DrawBackground() const;
     void SetParticlesData();
@@ -69,7 +69,7 @@ private:
     ID3D11Resource* m_pColorMapResource;
     ID3D11BlendState* m_pBlendState;
 
-    TextureName m_particleTexture;
+    Tex m_particleTexture;
     InstanceData m_particlesData[PARTICLES_COUNT];
     InstanceData m_crossHairData[1];
     Sprite m_crosshair = Sprite(float2(0.5f, 0.5f), 0.0f, float2(0.1f, 0.1f), Crosshair);

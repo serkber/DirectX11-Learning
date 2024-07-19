@@ -9,7 +9,7 @@ class Sprite
     // Constructors
 public:
     Sprite();
-    Sprite(float2 position, float rotation, float2 scale, TextureName texture);
+    Sprite(float2 position, float rotation, float2 scale, Tex texture);
     virtual ~Sprite();
 
     // Methods
@@ -24,5 +24,5 @@ public:
     float2 m_position;
     float m_rotation;
     float2 m_scale;
-    TextureName m_texture;
+    Tex m_texture;
 };

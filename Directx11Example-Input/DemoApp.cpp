@@ -163,7 +163,7 @@ void DemoApp::CreateCameraMatrix()
     m_cameraMatrix = DirectX::XMMatrixMultiply(view, projection);
 }
 
-bool DemoApp::LoadTexture(ID3D11ShaderResourceView** resource, TextureName texture)
+bool DemoApp::LoadTexture(ID3D11ShaderResourceView** resource, Tex texture)
 {
     HRESULT hr;
 

@@ -31,7 +31,7 @@ public:
     virtual void Render();
 
 private:
-    void DrawSpriteInstanced(TextureName texture, int spritesCount = 1) const;
+    void DrawSpriteInstanced(Tex texture, int spritesCount = 1) const;
     bool CreateConstantBuffer();
     bool InitInput();
     bool LoadVertexShader(ID3DBlob** pVSBuffer);
@@ -39,7 +39,7 @@ private:
     bool LoadPixelShader();
     bool CreateVertexBuffer();
     void CreateCameraMatrix();
-    bool LoadTexture(ID3D11ShaderResourceView** resource, TextureName texture);
+    bool LoadTexture(ID3D11ShaderResourceView** resource, Tex texture);
     void SetBlendingMode();
     bool CreateTextureSampler();
 
@@ -60,9 +60,9 @@ private:
     Sprite m_gamepadSprite = Sprite(float2(-0.7f, 0.5f), 0.0f, float2(0.1f, 0.1f), Gamepad);
     matrix m_cameraMatrix;
 
-    LPDIRECTINPUT8 m_pDirectInput;
     POINT* m_mousePos;
     float2 m_mousePosNorm;
+    LPDIRECTINPUT8 m_pDirectInput;
     LPDIRECTINPUTDEVICE8 m_pMouseDevice;
     LPDIRECTINPUTDEVICE8 m_pKeyboardDevice;
 };

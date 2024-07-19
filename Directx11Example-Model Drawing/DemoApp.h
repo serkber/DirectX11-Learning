@@ -66,7 +66,7 @@ private:
     FBXImporter::FBXModel m_model;
 
     std::string m_models[4] {"Suzanne2.fbx", "Cube.fbx", "Torus.fbx", "Fish.fbx"};
-    TextureName m_textures[4] {Suzanne, CubeUnwrap, Marble, Fish};
+    Tex m_textures[4] {Suzanne, CubeUnwrap, Marble, Fish};
     
     int m_currentModel = 0;
     bool m_drawWire = false;
